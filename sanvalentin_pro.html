@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hello Kitty San Valentín 🎀</title>
+
+<style>
+body{
+margin:0;
+overflow:hidden;
+font-family:"Comic Sans MS",cursive;
+background:#ffd6e7;
+display:flex;
+justify-content:center;
+align-items:center;
+height:100vh;
+}
+
+/* 💗 Corazones cayendo */
+.heart{
+position:fixed;
+top:-10px;
+font-size:20px;
+animation:fall linear forwards;
+}
+
+@keyframes fall{
+to{
+transform:translateY(110vh);
+opacity:0;
+}
+}
+
+.card{
+position:relative;
+background:white;
+padding:25px;
+border-radius:25px;
+width:340px;
+text-align:center;
+box-shadow:0 10px 30px rgba(0,0,0,0.2);
+z-index:2;
+}
+
+h1{ color:#ff69b4; }
+
+button{
+border:none;
+padding:12px 20px;
+margin:10px;
+border-radius:25px;
+font-size:16px;
+cursor:pointer;
+position:relative;
+}
+
+.si{ background:#ff69b4;color:white; }
+.no{ background:#ffc0cb; }
+
+img{
+width:130px;
+border-radius:15px;
+margin-bottom:10px;
+}
+
+.hidden{ display:none; }
+
+#warning{
+font-size:12px;
+color:#ff1493;
+margin-top:8px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="card">
+
+<!-- 📸 CAMBIADO EL NOMBRE DE TU FOTO -->
+<img src="IMG_0058.jpeg">
+
+<!-- 💌 TEXTO PERSONALIZADO -->
+<h1>🎀 ¿Quieres ser mi San Valentín pamelita bonita? 💖</h1>
+
+<div id="botones">
+<button class="si" onclick="acepto()">Sí 💕</button>
+<button id="btnNo" class="no" onclick="noQuiero()">No 🙈</button>
+<p id="warning" class="hidden">Si no aprietas que sí… la música no para 😈🎵</p>
+</div>
+
+<div id="mensajeFinal" class="hidden">
+<h2>💌 Gracias por ser mi san Valentín preciosa</h2>
+<p>Yo sabía que dirías que sí 😌<br>
+Nos vemos en los carnavales de Cajamarca! 🎉</p>
+</div>
+
+</div>
+
+<audio id="musica" src="september.mp3"></audio>
+
+<script>
+let volumen=0.2;
+let intentosNo=0;
+let moverActivo=false;
+
+/* 💗 Corazones cayendo */
+setInterval(()=>{
+const heart=document.createElement("div");
+heart.className="heart";
+heart.innerHTML="💗";
+heart.style.left=Math.random()*100+"vw";
+heart.style.animationDuration=(3+Math.random()*3)+"s";
+document.body.appendChild(heart);
+setTimeout(()=>heart.remove(),6000);
+},400);
+
+function moverBoton(){
+const btn=document.getElementById("btnNo");
+btn.style.position="absolute";
+btn.style.left=Math.random()*200+"px";
+btn.style.top=Math.random()*200+"px";
+}
+
+function noQuiero(){
+const audio=document.getElementById("musica");
+intentosNo++;
+
+audio.volume=volumen;
+audio.play();
+
+if(intentosNo==1){
+document.getElementById("warning").classList.remove("hidden");
+moverActivo=true;
+}
+
+if(intentosNo>=2){
+volumen+=0.25;
+if(volumen>1) volumen=1;
+}
+
+if(moverActivo){
+moverBoton();
+}
+}
+
+function acepto(){
+const audio=document.getElementById("musica");
+audio.pause();
+audio.currentTime=0;
+
+document.getElementById("botones").style.display="none";
+document.getElementById("mensajeFinal").classList.remove("hidden");
+}
+</script>
+
+</body>
+</html>
