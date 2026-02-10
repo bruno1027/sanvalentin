@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hello Kitty San Valentín 🎀</title>
+
+<!-- 💗 Fuente más elegante -->
+<link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+
+<style>
+body{
+margin:0;
+overflow:hidden;
+font-family:'Pacifico',cursive;
+background:#ffd6e7;
+display:flex;
+justify-content:center;
+align-items:center;
+height:100vh;
+}
+
+/* 💗 LLUVIA INTENSA DE CORAZONES */
+.heart{
+position:fixed;
+top:-10px;
+font-size:22px;
+animation:fall linear forwards;
+z-index:1;
+}
+
+@keyframes fall{
+to{
+transform:translateY(110vh);
+opacity:0;
+}
+}
+
+.card{
+position:relative;
+background:white;
+padding:25px;
+border-radius:25px;
+width:340px;
+text-align:center;
+box-shadow:0 10px 30px rgba(0,0,0,0.2);
+z-index:2;
+border:4px solid #ff9ecb; /* 🎀 toque hello kitty */
+}
+
+h1{ color:#ff4fa3; }
+
+button{
+border:none;
+padding:14px 22px;
+margin:10px;
+border-radius:25px;
+font-size:18px;
+cursor:pointer;
+position:relative;
+transition:0.2s;
+}
+
+.si{ background:#ff69b4;color:white; }
+.no{ background:#ffc0cb; }
+
+img{
+width:140px;
+border-radius:15px;
+margin-bottom:10px;
+border:3px solid #ffb6d9;
+}
+
+.hidden{ display:none; }
+
+#warning{
+font-size:13px;
+color:#ff1493;
+margin-top:8px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="card">
+
+<img src="IMG_0058.jpeg">
+
+<h1>🎀 ¿Quieres ser mi San Valentín pamelita bonita? 💖</h1>
+
+<div id="botones">
+<button id="btnSi" class="si" onclick="acepto()">Sí 💕</button>
+<button id="btnNo" class="no" onclick="noQuiero()">No 🙈</button>
+<p id="warning" class="hidden">Si no aprietas que sí… la música no para 😈🎵</p>
+</div>
+
+<div id="mensajeFinal" class="hidden">
+<h2>💌 Gracias por ser mi san Valentín preciosa</h2>
+<p>Yo sabía que dirías que sí 😌<br>
+Nos vemos en los carnavales de Cajamarca! 🎉</p>
+</div>
+
+</div>
+
+<!-- 🎵 MÚSICAS -->
+<audio id="musicaNo" src="september.mp3"></audio>
+<audio id="musicaSi" src="anaranjado.mp3"></audio>
+
+<script>
+let volumen=0.2;
+let intentosNo=0;
+let moverActivo=false;
+let escalaSi=1;
+
+/* 💗 MUCHÍSIMOS CORAZONES */
+setInterval(()=>{
+for(let i=0;i<3;i++){   // genera varios cada vez
+const heart=document.createElement("div");
+heart.className="heart";
+heart.innerHTML=Math.random()>0.5?"💗":"🎀";
+heart.style.left=Math.random()*100+"vw";
+heart.style.animationDuration=(3+Math.random()*2)+"s";
+document.body.appendChild(heart);
+setTimeout(()=>heart.remove(),5000);
+}
+},150);
+
+/* 😈 Botón NO se mueve */
+function moverBoton(){
+const btn=document.getElementById("btnNo");
+btn.style.position="absolute";
+btn.style.left=Math.random()*220+"px";
+btn.style.top=Math.random()*220+"px";
+}
+
+function noQuiero(){
+const audio=document.getElementById("musicaNo");
+intentosNo++;
+
+audio.volume=volumen;
+audio.play();
+
+document.getElementById("warning").classList.remove("hidden");
+
+/* 💥 botón SI crece */
+escalaSi+=0.2;
+document.getElementById("btnSi").style.transform="scale("+escalaSi+")";
+
+moverActivo=true;
+moverBoton();
+
+if(intentosNo>=2){
+volumen+=0.25;
+if(volumen>1) volumen=1;
+}
+}
+
+function acepto(){
+const audioNo=document.getElementById("musicaNo");
+const audioSi=document.getElementById("musicaSi");
+
+audioNo.pause();
+audioNo.currentTime=0;
+
+/* 🍊 suena nueva canción */
+audioSi.volume=0.6;
+audioSi.play();
+
+document.getElementById("botones").style.display="none";
+document.getElementById("mensajeFinal").classList.remove("hidden");
+}
+</script>
+
+</body>
+</html>
